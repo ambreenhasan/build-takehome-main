@@ -3,13 +3,19 @@ class Vegetable < ApplicationRecord
 
   def as_json(options = {})
     number_of_ratings = ratings.count
-    total = 0
+    rating_values = raings.map(&:value)
 
-    ratings.each do |rating|
-      total += rating.value
+     # solution 1:
+    total = rating_values.inject(0) do |running_total, value|
+      running_total += value
+      running_total
     end
 
-    average_rating = total/number_of_ratings
+    average_rating = total / number_of_ratings
     super(options).merge(average_rating: average_rating)
   end
 end
+
+# solutions:
+# inject for average
+# another solution is to use the average on Rating class.
